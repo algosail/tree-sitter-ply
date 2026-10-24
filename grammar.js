@@ -1,5 +1,6 @@
-// Token grammar for editor highlighting. The Ply compiler accepts or rejects
-// programs; this file only names the tokens an editor colors.
+// Highlight grammar. The Ply compiler accepts or rejects programs.
+// A word's name is a `definition` so the editor can color it. A colon
+// inside `()` `[]` `{}` is a field label, not a definition name.
 
 const KEYWORDS = [
   "import",
@@ -17,12 +18,31 @@ const KEYWORDS = [
 module.exports = grammar({
   name: "ply",
 
-  extras: ($) => [/\s/],
+  extras: ($) => [/[ \t\r]/],
 
   rules: {
-    source_file: ($) => repeat($._token),
+    source_file: ($) => seq(optional($._line), repeat(seq("\n", optional($._line)))),
 
-    _token: ($) =>
+    _line: ($) => choice($.definition, $._rest),
+
+    // `def` before the name is still accepted. `private` and `foreign` may precede it.
+    // Precedence wins over reading those two keywords as ordinary words: the
+    // colon is what makes the line a definition, and a keyword pair that is
+    // not `private def` / `foreign def` does not occur.
+    definition: ($) =>
+      prec(
+        2,
+        seq(
+          optional(seq($.keyword, optional($.keyword))),
+          field("name", $.identifier),
+          ":",
+          optional($._rest),
+        ),
+      ),
+
+    _rest: ($) => seq($._atom, repeat($._atom)),
+
+    _atom: ($) =>
       choice(
         $.comment,
         $.string,
@@ -35,19 +55,22 @@ module.exports = grammar({
         $.type_identifier,
         $.operator,
         $.identifier,
-        "(",
-        ")",
-        "[",
-        "]",
-        "{",
-        "}",
-        ":",
+        $.group,
         "=",
         "|",
         "!",
         ",",
         ".",
       ),
+
+    group: ($) =>
+      choice(
+        seq("(", repeat($._inner), ")"),
+        seq("[", repeat($._inner), "]"),
+        seq("{", repeat($._inner), "}"),
+      ),
+
+    _inner: ($) => choice($._atom, ":", "\n"),
 
     comment: ($) => token(seq(";", /[^\n]*/)),
 

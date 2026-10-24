@@ -9,6 +9,7 @@
 (field) @property
 (operator) @operator
 (identifier) @variable
+(definition name: (identifier) @variable @function)
 
 [
   "("

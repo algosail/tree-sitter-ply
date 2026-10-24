@@ -9,14 +9,16 @@ def fromMaybe : a. a (Maybe a) -- a
 ---
 
 (source_file
-  (keyword)
-  (identifier)
-  (identifier)
-  (identifier)
-  (type_identifier)
-  (identifier)
-  (operator)
-  (identifier)
+  (definition
+    (keyword)
+    name: (identifier)
+    (identifier)
+    (identifier)
+    (group
+      (type_identifier)
+      (identifier))
+    (operator)
+    (identifier))
   (keyword)
   (type_identifier)
   (operator)
@@ -63,8 +65,59 @@ def module : Int -- Int
 ---
 
 (source_file
-  (keyword)
+  (definition
+    (keyword)
+    name: (identifier)
+    (type_identifier)
+    (operator)
+    (type_identifier)))
+
+==================
+a bare name is the definition
+==================
+
+fact : Int -- Int
+  dup iadd
+
+foreign nzero : Number -- Bool
+
+---
+
+(source_file
+  (definition
+    name: (identifier)
+    (type_identifier)
+    (operator)
+    (type_identifier))
   (identifier)
-  (type_identifier)
-  (operator)
-  (type_identifier))
+  (identifier)
+  (definition
+    (keyword)
+    name: (identifier)
+    (type_identifier)
+    (operator)
+    (type_identifier)))
+
+==================
+a field colon is not a definition
+==================
+
+person : { name : String, age : Number }
+  eq : a a -- Bool
+
+---
+
+(source_file
+  (definition
+    name: (identifier)
+    (group
+      (identifier)
+      (type_identifier)
+      (identifier)
+      (type_identifier)))
+  (definition
+    name: (identifier)
+    (identifier)
+    (identifier)
+    (operator)
+    (type_identifier)))
