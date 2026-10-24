@@ -1,0 +1,29 @@
+{
+  "grammars": [
+    {
+      "name": "ply",
+      "camelcase": "Ply",
+      "scope": "source.ply",
+      "path": ".",
+      "file-types": ["ply"],
+      "highlights": "queries/highlights.scm"
+    }
+  ],
+  "metadata": {
+    "version": "0.0.1",
+    "license": "MIT",
+    "description": "Tree-sitter grammar for the Ply language",
+    "authors": [{ "name": "Algosail" }],
+    "links": {
+      "repository": "https://github.com/algosail/tree-sitter-ply"
+    }
+  },
+  "bindings": {
+    "c": false,
+    "go": false,
+    "node": false,
+    "python": false,
+    "rust": false,
+    "swift": false
+  }
+}

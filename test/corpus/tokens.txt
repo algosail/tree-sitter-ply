@@ -1,0 +1,66 @@
+==================
+keywords and names
+==================
+
+module Data.Maybe
+def fromMaybe : a. a (Maybe a) -- a
+  match
+    Nothing -> nip
+
+---
+
+(source_file
+  (keyword)
+  (type_identifier)
+  (punctuation)
+  (type_identifier)
+  (keyword)
+  (identifier)
+  (punctuation)
+  (identifier)
+  (punctuation)
+  (identifier)
+  (punctuation)
+  (type_identifier)
+  (identifier)
+  (punctuation)
+  (operator)
+  (identifier)
+  (keyword)
+  (type_identifier)
+  (operator)
+  (identifier))
+
+==================
+comment is not a string
+==================
+
+; keep -- and ;
+"keep ; this"
+
+---
+
+(source_file
+  (comment)
+  (string))
+
+==================
+numbers tails and fields
+==================
+
+-42 1.5 1e10 1. ..s #name . .. true false
+
+---
+
+(source_file
+  (integer)
+  (number)
+  (number)
+  (integer)
+  (punctuation)
+  (stack_tail)
+  (field)
+  (punctuation)
+  (operator)
+  (boolean)
+  (boolean))

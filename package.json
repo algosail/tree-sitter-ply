@@ -1,0 +1,15 @@
+{
+  "name": "tree-sitter-ply",
+  "version": "0.0.1",
+  "description": "Tree-sitter grammar for the Ply language",
+  "license": "MIT",
+  "main": "grammar.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algosail/tree-sitter-ply"
+  },
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test"
+  }
+}
