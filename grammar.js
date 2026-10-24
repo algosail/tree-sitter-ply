@@ -2,7 +2,6 @@
 // programs; this file only names the tokens an editor colors.
 
 const KEYWORDS = [
-  "module",
   "import",
   "language",
   "data",

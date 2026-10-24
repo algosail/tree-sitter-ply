@@ -2,7 +2,6 @@
 keywords and names
 ==================
 
-module Data.Maybe
 def fromMaybe : a. a (Maybe a) -- a
   match
     Nothing -> nip
@@ -10,9 +9,6 @@ def fromMaybe : a. a (Maybe a) -- a
 ---
 
 (source_file
-  (keyword)
-  (type_identifier)
-  (type_identifier)
   (keyword)
   (identifier)
   (identifier)
@@ -57,3 +53,18 @@ numbers tails and fields
   (operator)
   (boolean)
   (boolean))
+
+==================
+module is a name
+==================
+
+def module : Int -- Int
+
+---
+
+(source_file
+  (keyword)
+  (identifier)
+  (type_identifier)
+  (operator)
+  (type_identifier))
