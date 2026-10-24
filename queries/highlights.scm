@@ -9,4 +9,18 @@
 (field) @property
 (operator) @operator
 (identifier) @variable
-(punctuation) @punctuation
+
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+  ":"
+  "="
+  "|"
+  "!"
+  ","
+  "."
+] @punctuation

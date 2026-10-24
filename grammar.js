@@ -36,7 +36,18 @@ module.exports = grammar({
         $.type_identifier,
         $.operator,
         $.identifier,
-        $.punctuation,
+        "(",
+        ")",
+        "[",
+        "]",
+        "{",
+        "}",
+        ":",
+        "=",
+        "|",
+        "!",
+        ",",
+        ".",
       ),
 
     comment: ($) => token(seq(";", /[^\n]*/)),
@@ -61,8 +72,5 @@ module.exports = grammar({
     identifier: ($) => token(/[a-z_][A-Za-z0-9_]*/),
 
     operator: ($) => choice("--", "->", "=>", ".."),
-
-    punctuation: ($) =>
-      choice("(", ")", "[", "]", "{", "}", ":", "=", "|", "!", ",", "."),
   },
 });
