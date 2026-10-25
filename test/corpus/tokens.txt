@@ -1,109 +1,184 @@
 ==================
-keywords and names
+a word name follows the colon
 ==================
 
-def fromMaybe : a. a (Maybe a) -- a
-  match
-    Nothing -> nip
+: double ( Int -- Int )
+  dup iadd
+
+foreign : nzero ( Number -- Bool )
+
+private def : hidden ( Int -- Int )
 
 ---
 
 (source_file
   (definition
-    (keyword)
     name: (identifier)
-    (identifier)
-    (identifier)
     (group
       (type_identifier)
-      (identifier))
-    (operator)
-    (identifier))
+      (operator)
+      (type_identifier)))
+  (identifier)
+  (identifier)
+  (definition
+    (keyword)
+    name: (identifier)
+    (group
+      (type_identifier)
+      (operator)
+      (type_identifier)))
+  (definition
+    (keyword)
+    (keyword)
+    name: (identifier)
+    (group
+      (type_identifier)
+      (operator)
+      (type_identifier))))
+
+==================
+a class method name precedes the parentheses
+==================
+
+class Comparable a where
+  eq ( a a -- Bool )
+
+instance Comparable Int where
+  eq = eqInt
+
+---
+
+(source_file
   (keyword)
   (type_identifier)
-  (operator)
-  (identifier))
+  (identifier)
+  (keyword)
+  (method
+    name: (identifier)
+    (group
+      (identifier)
+      (identifier)
+      (operator)
+      (type_identifier)))
+  (keyword)
+  (type_identifier)
+  (type_identifier)
+  (keyword)
+  (binding
+    name: (identifier)
+    (identifier)))
 
 ==================
-comment is not a string
+dots inside parentheses stay syntax
 ==================
 
-; keep -- and ;
-"keep ; this"
+: map ( a b. (f a) (a -- b) -- (f b) )
+
+import "Ply/Maybe" (..)
+
+: dip ( ..s a -- ..t )
+
+---
+
+(source_file
+  (definition
+    name: (identifier)
+    (group
+      (identifier)
+      (identifier)
+      (group
+        (identifier)
+        (identifier))
+      (group
+        (identifier)
+        (operator)
+        (identifier))
+      (operator)
+      (group
+        (identifier)
+        (identifier))))
+  (keyword)
+  (string)
+  (group
+    (operator))
+  (definition
+    name: (identifier)
+    (group
+      (stack_tail)
+      (identifier)
+      (operator)
+      (stack_tail))))
+
+==================
+a dot outside parentheses is a comment
+==================
+
+. keep -- and .
+.. Double an integer.
+: double ( Int -- Int ) . note
+"keep . this"
 
 ---
 
 (source_file
   (comment)
+  (comment)
+  (definition
+    name: (identifier)
+    (group
+      (type_identifier)
+      (operator)
+      (type_identifier))
+    (comment))
   (string))
 
 ==================
-numbers tails and fields
+numbers fields and arrows
 ==================
 
--42 1.5 1e10 1. ..s #name . .. true false
+-42 1.5 1e10 1n 1. hidden
+name>> >>age
+[ x -> x ]
+{ name : String }
+type Person = { name : String }
+newtype Effect a = Effect (-- a )
 
 ---
 
 (source_file
-  (integer)
   (number)
   (number)
+  (number)
   (integer)
-  (stack_tail)
+  (number)
+  (comment)
   (field)
-  (operator)
-  (boolean)
-  (boolean))
+  (field)
+  (group
+    (identifier)
+    (operator)
+    (identifier))
+  (group
+    (identifier)
+    (type_identifier))
+  (keyword)
+  (type_identifier)
+  (group
+    (identifier)
+    (type_identifier))
+  (keyword)
+  (type_identifier)
+  (identifier)
+  (type_identifier)
+  (group
+    (operator)
+    (identifier)))
 
 ==================
 module is a name
 ==================
 
-def module : Int -- Int
-
----
-
-(source_file
-  (definition
-    (keyword)
-    name: (identifier)
-    (type_identifier)
-    (operator)
-    (type_identifier)))
-
-==================
-a bare name is the definition
-==================
-
-fact : Int -- Int
-  dup iadd
-
-foreign nzero : Number -- Bool
-
----
-
-(source_file
-  (definition
-    name: (identifier)
-    (type_identifier)
-    (operator)
-    (type_identifier))
-  (identifier)
-  (identifier)
-  (definition
-    (keyword)
-    name: (identifier)
-    (type_identifier)
-    (operator)
-    (type_identifier)))
-
-==================
-a field colon is not a definition
-==================
-
-person : { name : String, age : Number }
-  eq : a a -- Bool
+: module ( Int -- Int )
 
 ---
 
@@ -111,13 +186,30 @@ person : { name : String, age : Number }
   (definition
     name: (identifier)
     (group
-      (identifier)
       (type_identifier)
-      (identifier)
-      (type_identifier)))
+      (operator)
+      (type_identifier))))
+
+==================
+a field colon is not a definition
+==================
+
+: person ( { name : String, age : Number } -- { name : String } )
+  name>>
+
+---
+
+(source_file
   (definition
     name: (identifier)
-    (identifier)
-    (identifier)
-    (operator)
-    (type_identifier)))
+    (group
+      (group
+        (identifier)
+        (type_identifier)
+        (identifier)
+        (type_identifier))
+      (operator)
+      (group
+        (identifier)
+        (type_identifier))))
+  (field))
