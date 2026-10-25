@@ -246,6 +246,11 @@
     }
   },
   {
+    "type": "keyword",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "method",
     "named": true,
     "fields": {
@@ -563,6 +568,14 @@
     "named": false
   },
   {
+    "type": "#",
+    "named": false
+  },
+  {
+    "type": "&",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -572,6 +585,10 @@
   },
   {
     "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
     "named": false
   },
   {
@@ -595,15 +612,19 @@
     "named": false
   },
   {
+    "type": ";",
+    "named": false
+  },
+  {
     "type": "<",
     "named": false
   },
   {
-    "type": "<=",
+    "type": "=",
     "named": false
   },
   {
-    "type": "=",
+    "type": "==",
     "named": false
   },
   {
@@ -631,6 +652,10 @@
     "named": true
   },
   {
+    "type": "def",
+    "named": false
+  },
+  {
     "type": "field",
     "named": true
   },
@@ -640,10 +665,6 @@
   },
   {
     "type": "integer",
-    "named": true
-  },
-  {
-    "type": "keyword",
     "named": true
   },
   {
@@ -672,6 +693,10 @@
   },
   {
     "type": "}",
+    "named": false
+  },
+  {
+    "type": "~",
     "named": false
   }
 ]

@@ -5,9 +5,9 @@ a word name follows the colon
 : double ( Int -- Int )
   dup iadd
 
-foreign : nzero ( Number -- Bool )
+: foreign nzero ( Number -- Bool )
 
-private def : hidden ( Int -- Int )
+def : private hidden ( Int -- Int )
 
 ---
 
@@ -40,19 +40,20 @@ private def : hidden ( Int -- Int )
 a class method name precedes the parentheses
 ==================
 
-class Comparable a where
-  eq ( a a -- Bool )
+& Comparable a => Sortable a
+  compare ( a a -- Ordering )
 
-instance Comparable Int where
+# Comparable Int
   eq = eqInt
 
 ---
 
 (source_file
-  (keyword)
   (type_identifier)
   (identifier)
-  (keyword)
+  (operator)
+  (type_identifier)
+  (identifier)
   (method
     name: (identifier)
     (group
@@ -60,10 +61,8 @@ instance Comparable Int where
       (identifier)
       (operator)
       (type_identifier)))
-  (keyword)
   (type_identifier)
   (type_identifier)
-  (keyword)
   (binding
     name: (identifier)
     (identifier)))
@@ -74,7 +73,7 @@ dots inside parentheses stay syntax
 
 : map ( a b. (f a) (a -- b) -- (f b) )
 
-import "Ply/Maybe" (..)
+~ "Ply/Maybe" (..)
 
 : dip ( ..s a -- ..t )
 
@@ -97,7 +96,6 @@ import "Ply/Maybe" (..)
       (group
         (identifier)
         (identifier))))
-  (keyword)
   (string)
   (group
     (operator))
@@ -136,13 +134,13 @@ a dot outside parentheses is a comment
 numbers fields and arrows
 ==================
 
--42 1.5 1e10 1n 1. hidden
+-42 1.5 1e10 -1n 1n 1. hidden
 /name =age
-< x -> x >
-[ 1 2 3 ]
+[ x -> x ]
+< 1 2 3 >
 { name : String }
-type Person = { name : String }
-newtype Effect a = Effect (-- a )
+- Person { name : String }
+; Effect a == Effect (-- a )
 
 ---
 
@@ -150,6 +148,7 @@ newtype Effect a = Effect (-- a )
   (number)
   (number)
   (number)
+  (integer)
   (integer)
   (number)
   (comment)
@@ -166,14 +165,13 @@ newtype Effect a = Effect (-- a )
   (record
     (identifier)
     (type_identifier))
-  (keyword)
   (type_identifier)
   (record
     (identifier)
     (type_identifier))
-  (keyword)
   (type_identifier)
   (identifier)
+  (operator)
   (type_identifier)
   (group
     (operator)
@@ -220,10 +218,10 @@ a field colon is not a definition
   (field))
 
 ==================
-superclass arrow is not a quotation
+an array is not a quotation
 ==================
 
-class Sortable a <= Comparable a, Show a where
+& Comparable a, Show a => Sortable a
   compare ( a a -- Ordering )
 
 : same ( Comparable a => a a -- Bool )
@@ -233,15 +231,13 @@ class Sortable a <= Comparable a, Show a where
 ---
 
 (source_file
-  (keyword)
+  (type_identifier)
+  (identifier)
   (type_identifier)
   (identifier)
   (operator)
   (type_identifier)
   (identifier)
-  (type_identifier)
-  (identifier)
-  (keyword)
   (method
     name: (identifier)
     (group
@@ -261,8 +257,8 @@ class Sortable a <= Comparable a, Show a where
       (type_identifier)))
   (number)
   (field)
-  (quotation
-    (quotation
+  (array
+    (array
       (identifier))))
 
 ==================
@@ -276,6 +272,54 @@ empty array record and quotation
 ---
 
 (source_file
-  (array)
+  (quotation)
   (record)
-  (quotation))
+  (array))
+
+==================
+an array pattern has a fixed length
+==================
+
+: pick ( (Array Int) -- Int )
+  < 0n
+    a > -> a
+  _ -> 0n
+
+---
+
+(source_file
+  (definition
+    name: (identifier)
+    (group
+      (group
+        (type_identifier)
+        (type_identifier))
+      (operator)
+      (type_identifier)))
+  (array
+    (integer)
+    (identifier))
+  (operator)
+  (identifier)
+  (identifier)
+  (operator)
+  (integer))
+
+==================
+language and match stay keywords
+==================
+
+language 1
+match
+  Just x -> x
+
+---
+
+(source_file
+  (keyword)
+  (number)
+  (keyword)
+  (type_identifier)
+  (identifier)
+  (operator)
+  (identifier))

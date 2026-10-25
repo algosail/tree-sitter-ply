@@ -74,25 +74,13 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "keyword"
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "keyword"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  }
-                ]
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_def"
+                },
+                "named": true,
+                "value": "keyword"
               },
               {
                 "type": "BLANK"
@@ -102,6 +90,23 @@
           {
             "type": "STRING",
             "value": ":"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_vis"
+                },
+                "named": true,
+                "value": "keyword"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           },
           {
             "type": "FIELD",
@@ -233,7 +238,7 @@
         }
       ]
     },
-    "array": {
+    "quotation": {
       "type": "SEQ",
       "members": [
         {
@@ -273,7 +278,7 @@
         }
       ]
     },
-    "quotation": {
+    "array": {
       "type": "SEQ",
       "members": [
         {
@@ -359,6 +364,24 @@
           "name": "keyword"
         },
         {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_def"
+          },
+          "named": true,
+          "value": "keyword"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_vis"
+          },
+          "named": true,
+          "value": "keyword"
+        },
+        {
           "type": "SYMBOL",
           "name": "type_identifier"
         },
@@ -376,7 +399,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "array"
+          "name": "quotation"
         },
         {
           "type": "SYMBOL",
@@ -384,7 +407,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "quotation"
+          "name": "array"
         },
         {
           "type": "STRING",
@@ -397,6 +420,26 @@
         {
           "type": "STRING",
           "value": ","
+        },
+        {
+          "type": "STRING",
+          "value": "~"
+        },
+        {
+          "type": "STRING",
+          "value": ";"
+        },
+        {
+          "type": "STRING",
+          "value": "&"
+        },
+        {
+          "type": "STRING",
+          "value": "#"
+        },
+        {
+          "type": "STRING",
+          "value": "-"
         }
       ]
     },
@@ -519,28 +562,35 @@
           "members": [
             {
               "type": "STRING",
-              "value": "import"
-            },
-            {
-              "type": "STRING",
               "value": "language"
             },
             {
               "type": "STRING",
-              "value": "data"
-            },
-            {
-              "type": "STRING",
-              "value": "type"
-            },
-            {
-              "type": "STRING",
-              "value": "newtype"
-            },
-            {
-              "type": "STRING",
-              "value": "def"
-            },
+              "value": "match"
+            }
+          ]
+        }
+      }
+    },
+    "_def": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "STRING",
+          "value": "def"
+        }
+      }
+    },
+    "_vis": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "CHOICE",
+          "members": [
             {
               "type": "STRING",
               "value": "foreign"
@@ -548,22 +598,6 @@
             {
               "type": "STRING",
               "value": "private"
-            },
-            {
-              "type": "STRING",
-              "value": "where"
-            },
-            {
-              "type": "STRING",
-              "value": "class"
-            },
-            {
-              "type": "STRING",
-              "value": "instance"
-            },
-            {
-              "type": "STRING",
-              "value": "match"
             }
           ]
         }
@@ -600,7 +634,7 @@
         },
         {
           "type": "STRING",
-          "value": "<="
+          "value": "=="
         },
         {
           "type": "STRING",

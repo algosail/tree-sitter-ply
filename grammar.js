@@ -1,25 +1,13 @@
 // Highlight grammar. The Ply compiler accepts or rejects programs.
-// A word's name is the identifier after `:`. A class method's name is the
-// identifier before `(`. A colon inside `()` `[]` `{}` `<>` is a label,
-// not a definition. `[]` is an array, `{}` is a record, `<>` is a quotation.
-// `<=` is the superclass arrow, not an open quotation. A field is `/name`
-// or `=name`. Outside `()`, `.` comments to the end of the line. Inside
-// `()`, `.` and `..` stay scheme and import syntax.
+// A word's name is the identifier after `:`. `def` may stand before the
+// colon. `foreign` or `private` may stand between the colon and the name.
+// A class method's name is the identifier before `(`. A colon inside
+// `()` `[]` `{}` `<>` is a label, not a definition. `[]` is a quotation,
+// `{}` is a record, `<>` is an array. A field is `/name` or `=name`.
+// Outside `()`, `.` comments to the end of the line. Inside `()`, `.`
+// and `..` stay scheme and import syntax.
 
-const KEYWORDS = [
-  "import",
-  "language",
-  "data",
-  "type",
-  "newtype",
-  "def",
-  "foreign",
-  "private",
-  "where",
-  "class",
-  "instance",
-  "match",
-];
+const KEYWORDS = ["language", "match"];
 
 module.exports = grammar({
   name: "ply",
@@ -31,13 +19,14 @@ module.exports = grammar({
 
     _line: ($) => choice($.definition, $.method, $.binding, $._rest),
 
-    // `foreign : name`, `private def : name`, and `: name`.
+    // `def : foreign name`, `: private name`, and `: name`.
     definition: ($) =>
       prec(
         2,
         seq(
-          optional(seq($.keyword, optional($.keyword))),
+          optional(alias($._def, $.keyword)),
           ":",
+          optional(alias($._vis, $.keyword)),
           field("name", $.identifier),
           optional($._rest),
         ),
@@ -56,12 +45,13 @@ module.exports = grammar({
     // Round parentheses are schemes and import lists. A dot there is not a comment.
     group: ($) => seq("(", repeat($._paren), ")"),
 
-    array: ($) => seq("[", repeat($._nest), "]"),
+    // `[]` is a quotation. A newline inside it is free, and `.` still comments.
+    quotation: ($) => seq("[", repeat($._nest), "]"),
 
     record: ($) => seq("{", repeat($._nest), "}"),
 
-    // `<` not followed by `=` opens a quotation. `>` closes it. `<>` is not a bracket pair.
-    quotation: ($) => seq("<", repeat($._nest), ">"),
+    // `<>` is an array. Index 0 is the left element. `<=` is not a token.
+    array: ($) => seq("<", repeat($._nest), ">"),
 
     _paren: ($) => choice($._code, "\n", "."),
 
@@ -77,16 +67,23 @@ module.exports = grammar({
         $.field,
         $.boolean,
         $.keyword,
+        alias($._def, $.keyword),
+        alias($._vis, $.keyword),
         $.type_identifier,
         $.operator,
         $.identifier,
         $.group,
-        $.array,
-        $.record,
         $.quotation,
+        $.record,
+        $.array,
         "=",
         "|",
         ",",
+        "~",
+        ";",
+        "&",
+        "#",
+        "-",
       ),
 
     // Longer than `.`, `..`, and `..name` when those are also valid.
@@ -102,7 +99,7 @@ module.exports = grammar({
 
     stack_tail: ($) => token(/\.\.[a-z_][A-Za-z0-9_]*/),
 
-    // `/name` reads a field. `=name` replaces one. `=>` and `<=` stay operators.
+    // `/name` reads a field. `=name` replaces one. `=>` and `==` stay operators.
     field: ($) =>
       token(choice(/\/[A-Za-z_][A-Za-z0-9_]*/, /=[A-Za-z_][A-Za-z0-9_]*/)),
 
@@ -110,10 +107,16 @@ module.exports = grammar({
 
     keyword: ($) => token(prec(1, choice(...KEYWORDS))),
 
+    // Before `:`. Shown as `keyword`, same as `language` and `match`.
+    _def: ($) => token(prec(1, "def")),
+
+    // Between `:` and the name. Exactly one of these in a real program.
+    _vis: ($) => token(prec(1, choice("foreign", "private"))),
+
     type_identifier: ($) => token(/[A-Z][A-Za-z0-9_]*/),
 
     identifier: ($) => token(/[a-z_][A-Za-z0-9_]*/),
 
-    operator: ($) => choice("--", "->", "=>", "<=", ".."),
+    operator: ($) => choice("--", "->", "=>", "==", ".."),
   },
 });
