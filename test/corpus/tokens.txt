@@ -137,8 +137,9 @@ numbers fields and arrows
 ==================
 
 -42 1.5 1e10 1n 1. hidden
-name>> >>age
-[ x -> x ]
+/name =age
+< x -> x >
+[ 1 2 3 ]
 { name : String }
 type Person = { name : String }
 newtype Effect a = Effect (-- a )
@@ -154,16 +155,20 @@ newtype Effect a = Effect (-- a )
   (comment)
   (field)
   (field)
-  (group
+  (quotation
     (identifier)
     (operator)
     (identifier))
-  (group
+  (array
+    (number)
+    (number)
+    (number))
+  (record
     (identifier)
     (type_identifier))
   (keyword)
   (type_identifier)
-  (group
+  (record
     (identifier)
     (type_identifier))
   (keyword)
@@ -195,7 +200,7 @@ a field colon is not a definition
 ==================
 
 : person ( { name : String, age : Number } -- { name : String } )
-  name>>
+  /name
 
 ---
 
@@ -203,13 +208,74 @@ a field colon is not a definition
   (definition
     name: (identifier)
     (group
-      (group
+      (record
         (identifier)
         (type_identifier)
         (identifier)
         (type_identifier))
       (operator)
-      (group
+      (record
         (identifier)
         (type_identifier))))
   (field))
+
+==================
+superclass arrow is not a quotation
+==================
+
+class Sortable a <= Comparable a, Show a where
+  compare ( a a -- Ordering )
+
+: same ( Comparable a => a a -- Bool )
+  37 =age
+  < < dup > >
+
+---
+
+(source_file
+  (keyword)
+  (type_identifier)
+  (identifier)
+  (operator)
+  (type_identifier)
+  (identifier)
+  (type_identifier)
+  (identifier)
+  (keyword)
+  (method
+    name: (identifier)
+    (group
+      (identifier)
+      (identifier)
+      (operator)
+      (type_identifier)))
+  (definition
+    name: (identifier)
+    (group
+      (type_identifier)
+      (identifier)
+      (operator)
+      (identifier)
+      (identifier)
+      (operator)
+      (type_identifier)))
+  (number)
+  (field)
+  (quotation
+    (quotation
+      (identifier))))
+
+==================
+empty array record and quotation
+==================
+
+[]
+{}
+<>
+
+---
+
+(source_file
+  (array)
+  (record)
+  (quotation))

@@ -1,8 +1,10 @@
 // Highlight grammar. The Ply compiler accepts or rejects programs.
 // A word's name is the identifier after `:`. A class method's name is the
-// identifier before `(`. A colon inside `()` `[]` `{}` is a field label.
-// Outside `()`, `.` comments to the end of the line. Inside `()`, `.` and
-// `..` stay scheme and import syntax.
+// identifier before `(`. A colon inside `()` `[]` `{}` `<>` is a label,
+// not a definition. `[]` is an array, `{}` is a record, `<>` is a quotation.
+// `<=` is the superclass arrow, not an open quotation. A field is `/name`
+// or `=name`. Outside `()`, `.` comments to the end of the line. Inside
+// `()`, `.` and `..` stay scheme and import syntax.
 
 const KEYWORDS = [
   "import",
@@ -42,8 +44,7 @@ module.exports = grammar({
       ),
 
     // `eq ( a a -- Bool )`. The name is only a method when `(` follows it.
-    method: ($) =>
-      prec(2, seq(field("name", $.identifier), alias($._paren_group, $.group), optional($._rest))),
+    method: ($) => prec(2, seq(field("name", $.identifier), $.group, optional($._rest))),
 
     // `eq = eqInt`.
     binding: ($) => prec(2, seq(field("name", $.identifier), "=", $.identifier)),
@@ -52,18 +53,19 @@ module.exports = grammar({
 
     _atom: ($) => choice($.comment, $._code),
 
-    group: ($) => choice($._paren_group, $._bracket_group, $._brace_group),
-
     // Round parentheses are schemes and import lists. A dot there is not a comment.
-    _paren_group: ($) => seq("(", repeat($._paren), ")"),
+    group: ($) => seq("(", repeat($._paren), ")"),
 
-    _bracket_group: ($) => seq("[", repeat($._nest), "]"),
+    array: ($) => seq("[", repeat($._nest), "]"),
 
-    _brace_group: ($) => seq("{", repeat($._nest), "}"),
+    record: ($) => seq("{", repeat($._nest), "}"),
+
+    // `<` not followed by `=` opens a quotation. `>` closes it. `<>` is not a bracket pair.
+    quotation: ($) => seq("<", repeat($._nest), ">"),
 
     _paren: ($) => choice($._code, "\n", "."),
 
-    // `[]` and `{}` do not raise the parenthesis depth, so `.` comments there.
+    // `[]`, `{}`, and `<>` do not raise the parenthesis depth, so `.` comments there.
     _nest: ($) => choice($._atom, ":", "\n"),
 
     _code: ($) =>
@@ -79,6 +81,9 @@ module.exports = grammar({
         $.operator,
         $.identifier,
         $.group,
+        $.array,
+        $.record,
+        $.quotation,
         "=",
         "|",
         ",",
@@ -97,8 +102,9 @@ module.exports = grammar({
 
     stack_tail: ($) => token(/\.\.[a-z_][A-Za-z0-9_]*/),
 
+    // `/name` reads a field. `=name` replaces one. `=>` and `<=` stay operators.
     field: ($) =>
-      token(choice(/[A-Za-z_][A-Za-z0-9_]*>>/, />>[A-Za-z_][A-Za-z0-9_]*/)),
+      token(choice(/\/[A-Za-z_][A-Za-z0-9_]*/, /=[A-Za-z_][A-Za-z0-9_]*/)),
 
     boolean: ($) => token(prec(1, choice("true", "false"))),
 
@@ -108,6 +114,6 @@ module.exports = grammar({
 
     identifier: ($) => token(/[a-z_][A-Za-z0-9_]*/),
 
-    operator: ($) => choice("--", "->", "=>", ".."),
+    operator: ($) => choice("--", "->", "=>", "<=", ".."),
   },
 });

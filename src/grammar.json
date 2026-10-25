@@ -141,13 +141,8 @@
             }
           },
           {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_paren_group"
-            },
-            "named": true,
-            "value": "group"
+            "type": "SYMBOL",
+            "name": "group"
           },
           {
             "type": "CHOICE",
@@ -219,23 +214,6 @@
       ]
     },
     "group": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_paren_group"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_bracket_group"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_brace_group"
-        }
-      ]
-    },
-    "_paren_group": {
       "type": "SEQ",
       "members": [
         {
@@ -255,7 +233,7 @@
         }
       ]
     },
-    "_bracket_group": {
+    "array": {
       "type": "SEQ",
       "members": [
         {
@@ -275,7 +253,7 @@
         }
       ]
     },
-    "_brace_group": {
+    "record": {
       "type": "SEQ",
       "members": [
         {
@@ -292,6 +270,26 @@
         {
           "type": "STRING",
           "value": "}"
+        }
+      ]
+    },
+    "quotation": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_nest"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ">"
         }
       ]
     },
@@ -375,6 +373,18 @@
         {
           "type": "SYMBOL",
           "name": "group"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "array"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "record"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "quotation"
         },
         {
           "type": "STRING",
@@ -470,11 +480,11 @@
         "members": [
           {
             "type": "PATTERN",
-            "value": "[A-Za-z_][A-Za-z0-9_]*>>"
+            "value": "\\/[A-Za-z_][A-Za-z0-9_]*"
           },
           {
             "type": "PATTERN",
-            "value": ">>[A-Za-z_][A-Za-z0-9_]*"
+            "value": "=[A-Za-z_][A-Za-z0-9_]*"
           }
         ]
       }
@@ -587,6 +597,10 @@
         {
           "type": "STRING",
           "value": "=>"
+        },
+        {
+          "type": "STRING",
+          "value": "<="
         },
         {
           "type": "STRING",
