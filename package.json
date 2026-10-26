@@ -3,10 +3,13 @@
   "version": "0.0.1",
   "description": "Tree-sitter grammar for the Ply language",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "grammar.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/algosail/tree-sitter-ply"
+    "url": "git+https://github.com/algosail/tree-sitter-ply.git"
   },
   "scripts": {
     "generate": "tree-sitter generate",
