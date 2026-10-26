@@ -18,4 +18,4 @@ git remote add origin git@github.com:algosail/tree-sitter-ply.git
 git push -u origin main
 ```
 
-Дальше в `plylang/editors/zed/extension.toml` поле `repository` можно сменить с локального `file://` на `https://github.com/algosail/tree-sitter-ply`. Поле `rev` остаётся тем же коммитом.
+Расширение Zed — соседний репозиторий `zed-ply`. В его `extension.toml` поле `repository` указывает на `https://github.com/algosail/tree-sitter-ply`, а `rev` — на коммит этой ветки.
