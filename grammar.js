@@ -1,11 +1,12 @@
 // Highlight grammar. The Ply compiler accepts or rejects programs.
 // A word's name is the identifier after `:`. `def` may stand before the
-// colon. `foreign` or `private` may stand between the colon and the name.
-// A class method's name is the identifier before `(`. A colon inside
-// `()` `[]` `{}` `<>` is a label, not a definition. `[]` is a quotation,
-// `{}` is a record, `<>` is an array. A field is `/name` or `=name`.
-// Outside `()`, `.` comments to the end of the line. Inside `()`, `.`
-// and `..` stay scheme and import syntax.
+// colon. `foreign` and `private` may stand between the colon and the name,
+// each at most once, in either order. A class method's name is the
+// identifier before `(`. A colon inside `()` `[]` `{}` `<>` is a label,
+// not a definition. `[]` is a quotation, `{}` is a record, `<>` is an
+// array. A field is `/name`, `=name`, or `+name`. Outside `()`, `.`
+// comments to the end of the line. Inside `()`, `.` and `..` stay scheme
+// and import syntax.
 
 const KEYWORDS = ["language", "match"];
 
@@ -19,17 +20,26 @@ module.exports = grammar({
 
     _line: ($) => choice($.definition, $.method, $.binding, $._rest),
 
-    // `def : foreign name`, `: private name`, and `: name`.
+    // `def : name`, `: foreign private name`, `: private foreign name`.
     definition: ($) =>
       prec(
         2,
         seq(
           optional(alias($._def, $.keyword)),
           ":",
-          optional(alias($._vis, $.keyword)),
+          optional($._modifiers),
           field("name", $.identifier),
           optional($._rest),
         ),
+      ),
+
+    // Each modifier once. A repeated `foreign` or `private` is not a name.
+    _modifiers: ($) =>
+      choice(
+        alias($._foreign, $.keyword),
+        alias($._private, $.keyword),
+        seq(alias($._foreign, $.keyword), alias($._private, $.keyword)),
+        seq(alias($._private, $.keyword), alias($._foreign, $.keyword)),
       ),
 
     // `eq ( a a -- Bool )`. The name is only a method when `(` follows it.
@@ -68,7 +78,8 @@ module.exports = grammar({
         $.boolean,
         $.keyword,
         alias($._def, $.keyword),
-        alias($._vis, $.keyword),
+        alias($._foreign, $.keyword),
+        alias($._private, $.keyword),
         $.type_identifier,
         $.operator,
         $.identifier,
@@ -99,9 +110,16 @@ module.exports = grammar({
 
     stack_tail: ($) => token(/\.\.[a-z_][A-Za-z0-9_]*/),
 
-    // `/name` reads a field. `=name` replaces one. `=>` and `==` stay operators.
+    // `/name` reads a field. `=name` replaces one. `+name` inserts one.
+    // `=>`, `==`, `+1`, and a spaced `+` stay out of this token.
     field: ($) =>
-      token(choice(/\/[A-Za-z_][A-Za-z0-9_]*/, /=[A-Za-z_][A-Za-z0-9_]*/)),
+      token(
+        choice(
+          /\/[A-Za-z_][A-Za-z0-9_]*/,
+          /=[A-Za-z_][A-Za-z0-9_]*/,
+          /\+[A-Za-z_][A-Za-z0-9_]*/,
+        ),
+      ),
 
     boolean: ($) => token(prec(1, choice("true", "false"))),
 
@@ -110,8 +128,10 @@ module.exports = grammar({
     // Before `:`. Shown as `keyword`, same as `language` and `match`.
     _def: ($) => token(prec(1, "def")),
 
-    // Between `:` and the name. Exactly one of these in a real program.
-    _vis: ($) => token(prec(1, choice("foreign", "private"))),
+    // Between `:` and the name. Each token once, either order.
+    _foreign: ($) => token(prec(1, "foreign")),
+
+    _private: ($) => token(prec(1, "private")),
 
     type_identifier: ($) => token(/[A-Z][A-Za-z0-9_]*/),
 

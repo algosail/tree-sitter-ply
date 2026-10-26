@@ -323,3 +323,48 @@ match
   (identifier)
   (operator)
   (identifier))
+
+==================
+both modifiers and a field insert
+==================
+
+: foreign private length ( (Array a) -- Num )
+
+: private foreign secret ( Str -- Str )
+  /name =age +city
+
+: open ( { name : Str | r } -- Str )
+
+---
+
+(source_file
+  (definition
+    (keyword)
+    (keyword)
+    name: (identifier)
+    (group
+      (group
+        (type_identifier)
+        (identifier))
+      (operator)
+      (type_identifier)))
+  (definition
+    (keyword)
+    (keyword)
+    name: (identifier)
+    (group
+      (type_identifier)
+      (operator)
+      (type_identifier)))
+  (field)
+  (field)
+  (field)
+  (definition
+    name: (identifier)
+    (group
+      (record
+        (identifier)
+        (type_identifier)
+        (identifier))
+      (operator)
+      (type_identifier))))

@@ -660,6 +660,10 @@
     "named": true
   },
   {
+    "type": "foreign",
+    "named": false
+  },
+  {
     "type": "identifier",
     "named": true
   },
@@ -670,6 +674,10 @@
   {
     "type": "number",
     "named": true
+  },
+  {
+    "type": "private",
+    "named": false
   },
   {
     "type": "stack_tail",
