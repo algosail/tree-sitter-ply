@@ -1,14 +1,12 @@
 // Highlight grammar. The Ply compiler accepts or rejects programs.
-// A word's name is the identifier after `:`. `def` may stand before the
-// colon. `foreign` and `private` may stand between the colon and the name,
+// A word's name is the identifier after `:`. `foreign` and `private` may
+// stand between the colon and the name,
 // each at most once, in either order. A class method's name is the
 // identifier before `(`. A colon inside `()` `[]` `{}` `<>` is a label,
 // not a definition. `[]` is a quotation, `{}` is a record, `<>` is an
 // array. A field is `/name`, `=name`, or `+name`. Outside `()`, `.`
 // comments to the end of the line. Inside `()`, `.` and `..` stay scheme
 // and import syntax.
-
-const KEYWORDS = ["language", "match"];
 
 module.exports = grammar({
   name: "ply",
@@ -20,12 +18,11 @@ module.exports = grammar({
 
     _line: ($) => choice($.definition, $.method, $.binding, $._rest),
 
-    // `def : name`, `: foreign private name`, `: private foreign name`.
+    // `: name`, `: foreign private name`, `: private foreign name`.
     definition: ($) =>
       prec(
         2,
         seq(
-          optional(alias($._def, $.keyword)),
           ":",
           optional($._modifiers),
           field("name", $.identifier),
@@ -77,7 +74,6 @@ module.exports = grammar({
         $.field,
         $.boolean,
         $.keyword,
-        alias($._def, $.keyword),
         alias($._foreign, $.keyword),
         alias($._private, $.keyword),
         $.type_identifier,
@@ -123,10 +119,7 @@ module.exports = grammar({
 
     boolean: ($) => token(prec(1, choice("true", "false"))),
 
-    keyword: ($) => token(prec(1, choice(...KEYWORDS))),
-
-    // Before `:`. Shown as `keyword`, same as `language` and `match`.
-    _def: ($) => token(prec(1, "def")),
+    keyword: ($) => token(prec(1, "language")),
 
     // Between `:` and the name. Each token once, either order.
     _foreign: ($) => token(prec(1, "foreign")),

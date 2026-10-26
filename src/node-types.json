@@ -652,10 +652,6 @@
     "named": true
   },
   {
-    "type": "def",
-    "named": false
-  },
-  {
     "type": "field",
     "named": true
   },

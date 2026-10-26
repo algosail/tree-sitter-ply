@@ -7,7 +7,7 @@ a word name follows the colon
 
 : foreign nzero ( Number -- Bool )
 
-def : private hidden ( Int -- Int )
+: private hidden ( Int -- Int )
 
 ---
 
@@ -28,7 +28,6 @@ def : private hidden ( Int -- Int )
       (operator)
       (type_identifier)))
   (definition
-    (keyword)
     (keyword)
     name: (identifier)
     (group
@@ -306,7 +305,7 @@ an array pattern has a fixed length
   (integer))
 
 ==================
-language and match stay keywords
+language stays a keyword and match is a word
 ==================
 
 language 1
@@ -318,7 +317,7 @@ match
 (source_file
   (keyword)
   (number)
-  (keyword)
+  (identifier)
   (type_identifier)
   (identifier)
   (operator)

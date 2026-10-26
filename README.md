@@ -1,21 +1,10 @@
 # tree-sitter-ply
 
-Грамматика подсветки языка Ply. Программу принимает компилятор `plylang`. Этот репозиторий называет токены, чтобы редактор покрасил имя.
+Tree-sitter grammar for highlighting Ply. The `plylang` compiler accepts or rejects a program. This repository names the tokens so an editor can color a file.
 
-Имя слова — идентификатор после `:`. Перед двоеточием может стоять `def`. Между двоеточием и именем стоят `foreign` и `private`: каждый один раз, порядок любой. Имя метода — идентификатор перед `(`. Привязка `имя = слово` — узел `binding`. Вне `()` точка до конца строки — узел `comment`: и строчный комментарий, и `..`. Внутри `()` точка и `..` остаются схемой и импортом. `language`, `def`, `foreign`, `private` и `match` — ключевые слова. `->`, `=>`, `==` и `--` — операторы. Поле — `/name`, `=name` или `+name`. `[]` — кавычка, `{}` — запись, `<>` — массив. Руны объявлений — `~` `;` `-` `&` `#` `:`.
-
-Zed забирает репозиторий по git-ревизии и компилирует `src/parser.c`. Сгенерированные файлы в `src/` входят в коммит. После правки `grammar.js`:
+Files under `src/` are generated and committed. After a change to `grammar.js`, rebuild the parser and run the corpus:
 
 ```sh
 tree-sitter generate
 tree-sitter test
 ```
-
-Публикация, из этой папки:
-
-```sh
-git remote add origin git@github.com:algosail/tree-sitter-ply.git
-git push -u origin main
-```
-
-Расширение Zed — соседний репозиторий `zed-ply`. В его `extension.toml` поле `repository` указывает на `https://github.com/algosail/tree-sitter-ply`, а `rev` — на коммит этой ветки.

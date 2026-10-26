@@ -71,23 +71,6 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_def"
-                },
-                "named": true,
-                "value": "keyword"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
-          {
             "type": "STRING",
             "value": ":"
           },
@@ -431,15 +414,6 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "_def"
-          },
-          "named": true,
-          "value": "keyword"
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
             "name": "_foreign"
           },
           "named": true,
@@ -635,28 +609,8 @@
         "type": "PREC",
         "value": 1,
         "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "language"
-            },
-            {
-              "type": "STRING",
-              "value": "match"
-            }
-          ]
-        }
-      }
-    },
-    "_def": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 1,
-        "content": {
           "type": "STRING",
-          "value": "def"
+          "value": "language"
         }
       }
     },
