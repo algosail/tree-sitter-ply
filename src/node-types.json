@@ -636,6 +636,10 @@
     "named": false
   },
   {
+    "type": "@",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
@@ -670,10 +674,6 @@
   {
     "type": "number",
     "named": true
-  },
-  {
-    "type": "private",
-    "named": false
   },
   {
     "type": "stack_tail",

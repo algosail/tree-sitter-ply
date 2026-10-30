@@ -28,8 +28,8 @@ a word name follows the colon
       (operator)
       (type_identifier)))
   (definition
-    (keyword)
     name: (identifier)
+    (identifier)
     (group
       (type_identifier)
       (operator)
@@ -324,12 +324,12 @@ match
   (identifier))
 
 ==================
-both modifiers and a field insert
+a foreign word and a field insert
 ==================
 
-: foreign private length ( (Array a) -- Num )
+: foreign length ( (Array a) -- Num )
 
-: private foreign secret ( Str -- Str )
+: secret ( Str -- Str )
   /name =age +city
 
 : open ( { name : Str | r } -- Str )
@@ -339,7 +339,6 @@ both modifiers and a field insert
 (source_file
   (definition
     (keyword)
-    (keyword)
     name: (identifier)
     (group
       (group
@@ -348,8 +347,6 @@ both modifiers and a field insert
       (operator)
       (type_identifier)))
   (definition
-    (keyword)
-    (keyword)
     name: (identifier)
     (group
       (type_identifier)

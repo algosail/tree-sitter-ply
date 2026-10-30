@@ -1,7 +1,6 @@
 // Highlight grammar. The Ply compiler accepts or rejects programs.
-// A word's name is the identifier after `:`. `foreign` and `private` may
-// stand between the colon and the name,
-// each at most once, in either order. A class method's name is the
+// A word's name is the identifier after `:`. `foreign` may stand once
+// between the colon and the name. A class method's name is the
 // identifier before `(`. A colon inside `()` `[]` `{}` `<>` is a label,
 // not a definition. `[]` is a quotation, `{}` is a record, `<>` is an
 // array. A field is `/name`, `=name`, or `+name`. Outside `()`, `.`
@@ -18,25 +17,16 @@ module.exports = grammar({
 
     _line: ($) => choice($.definition, $.method, $.binding, $._rest),
 
-    // `: name`, `: foreign private name`, `: private foreign name`.
+    // `: name` or `: foreign name`.
     definition: ($) =>
       prec(
         2,
         seq(
           ":",
-          optional($._modifiers),
+          optional(alias($._foreign, $.keyword)),
           field("name", $.identifier),
           optional($._rest),
         ),
-      ),
-
-    // Each modifier once. A repeated `foreign` or `private` is not a name.
-    _modifiers: ($) =>
-      choice(
-        alias($._foreign, $.keyword),
-        alias($._private, $.keyword),
-        seq(alias($._foreign, $.keyword), alias($._private, $.keyword)),
-        seq(alias($._private, $.keyword), alias($._foreign, $.keyword)),
       ),
 
     // `eq ( a a -- Bool )`. The name is only a method when `(` follows it.
@@ -75,7 +65,6 @@ module.exports = grammar({
         $.boolean,
         $.keyword,
         alias($._foreign, $.keyword),
-        alias($._private, $.keyword),
         $.type_identifier,
         $.operator,
         $.identifier,
@@ -91,6 +80,7 @@ module.exports = grammar({
         "&",
         "#",
         "-",
+        "@",
       ),
 
     // Longer than `.`, `..`, and `..name` when those are also valid.
@@ -121,10 +111,8 @@ module.exports = grammar({
 
     keyword: ($) => token(prec(1, "language")),
 
-    // Between `:` and the name. Each token once, either order.
+    // Between `:` and the name, at most once.
     _foreign: ($) => token(prec(1, "foreign")),
-
-    _private: ($) => token(prec(1, "private")),
 
     type_identifier: ($) => token(/[A-Z][A-Za-z0-9_]*/),
 
