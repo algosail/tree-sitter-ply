@@ -5,8 +5,7 @@
 // not a definition. `[]` is a quotation, `{}` is a record, `<>` is an
 // array. A field is `/name`, `=name`, or `+name`. Outside `()`, `.`
 // comments to the end of the line. Inside `()`, `.` and `..` stay scheme
-// and import syntax. A bare `..` outside parentheses is the import-all
-// rune. `..` followed by a space or a name stays a comment.
+// syntax.
 
 module.exports = grammar({
   name: "ply",
@@ -85,18 +84,7 @@ module.exports = grammar({
       ),
 
     // Longer than `.`, `..`, and `..name` when those are also valid.
-    comment: ($) =>
-      token(
-        prec(
-          2,
-          choice(
-            seq(".", /[^.\n][^\n]*/),
-            ".",
-            seq("..", /[ \t][^\n]*/),
-            seq("..", /[A-Za-z_][^\n]*/),
-          ),
-        ),
-      ),
+    comment: ($) => token(prec(2, seq(".", /[^\n]*/))),
 
     string: ($) => token(seq('"', repeat(choice(/[^"\\]/, /\\./)), '"')),
 

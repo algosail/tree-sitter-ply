@@ -72,7 +72,7 @@ dots inside parentheses stay syntax
 
 : map ( a b. (f a) (a -- b) -- (f b) )
 
-~ "Ply/Maybe" ..
+~ "Ply/Maybe"
 
 : dip ( ..s a -- ..t )
 
@@ -96,7 +96,6 @@ dots inside parentheses stay syntax
         (identifier)
         (identifier))))
   (string)
-  (operator)
   (definition
     name: (identifier)
     (group

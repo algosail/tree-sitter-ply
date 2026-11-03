@@ -427,50 +427,15 @@
         "type": "PREC",
         "value": 2,
         "content": {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "."
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "[^.\\n][^\\n]*"
-                }
-              ]
-            },
             {
               "type": "STRING",
               "value": "."
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": ".."
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "[ \\t][^\\n]*"
-                }
-              ]
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": ".."
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "[A-Za-z_][^\\n]*"
-                }
-              ]
+              "type": "PATTERN",
+              "value": "[^\\n]*"
             }
           ]
         }
