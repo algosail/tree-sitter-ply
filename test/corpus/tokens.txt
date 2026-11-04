@@ -150,7 +150,7 @@ numbers fields and arrows
   (number)
   (comment)
   (field)
-  (field)
+  (place_set)
   (quotation
     (identifier)
     (operator)
@@ -253,7 +253,7 @@ an array is not a quotation
       (operator)
       (type_identifier)))
   (number)
-  (field)
+  (place_set)
   (array
     (array
       (identifier))))
@@ -351,7 +351,7 @@ a foreign word and a field insert
       (operator)
       (type_identifier)))
   (field)
-  (field)
+  (place_set)
   (field)
   (definition
     name: (identifier)
@@ -362,3 +362,74 @@ a foreign word and a field insert
         (identifier))
       (operator)
       (type_identifier))))
+
+==================
+a place declares one frame and the glued words use it
+==================
+
+.. The current base.
+= base Num
+  10
+
+: bumped ( -- Num )
+  base 1 add dup =base
+
+: sample ( -- Num )
+  20 [ 3 [ scaled ] =>scale ] =>base
+
+: qualified ( Num -- Num )
+  dup =Alias:base [ Alias:base ] =>Alias:base
+
+eq = eqInt
+Comparable a => Sortable a
+
+---
+
+(source_file
+  (comment)
+  (place
+    name: (identifier)
+    (type_identifier))
+  (number)
+  (definition
+    name: (identifier)
+    (group
+      (operator)
+      (type_identifier)))
+  (identifier)
+  (number)
+  (identifier)
+  (identifier)
+  (place_set)
+  (definition
+    name: (identifier)
+    (group
+      (operator)
+      (type_identifier)))
+  (number)
+  (quotation
+    (number)
+    (quotation
+      (identifier))
+    (place_bind))
+  (place_bind)
+  (definition
+    name: (identifier)
+    (group
+      (type_identifier)
+      (operator)
+      (type_identifier)))
+  (identifier)
+  (place_set)
+  (quotation
+    (type_identifier)
+    (identifier))
+  (place_bind)
+  (binding
+    name: (identifier)
+    (identifier))
+  (type_identifier)
+  (identifier)
+  (operator)
+  (type_identifier)
+  (identifier))

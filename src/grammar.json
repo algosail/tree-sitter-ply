@@ -60,6 +60,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "place"
+        },
+        {
+          "type": "SYMBOL",
           "name": "_rest"
         }
       ]
@@ -168,6 +172,39 @@
           {
             "type": "SYMBOL",
             "name": "identifier"
+          }
+        ]
+      }
+    },
+    "place": {
+      "type": "PREC",
+      "value": 2,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "="
+          },
+          {
+            "type": "FIELD",
+            "name": "name",
+            "content": {
+              "type": "SYMBOL",
+              "name": "identifier"
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_rest"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
@@ -365,6 +402,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "place_set"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "place_bind"
+        },
+        {
+          "type": "SYMBOL",
           "name": "identifier"
         },
         {
@@ -505,13 +550,49 @@
           },
           {
             "type": "PATTERN",
-            "value": "=[A-Za-z_][A-Za-z0-9_]*"
-          },
-          {
-            "type": "PATTERN",
             "value": "\\+[A-Za-z_][A-Za-z0-9_]*"
           }
         ]
+      }
+    },
+    "place_set": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 2,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "[=][A-Z][A-Za-z0-9_]*:[A-Za-z_][A-Za-z0-9_]*"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[=][A-Za-z_][A-Za-z0-9_]*"
+            }
+          ]
+        }
+      }
+    },
+    "place_bind": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 2,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "=>[A-Z][A-Za-z0-9_]*:[A-Za-z_][A-Za-z0-9_]*"
+            },
+            {
+              "type": "PATTERN",
+              "value": "=>[A-Za-z_][A-Za-z0-9_]*"
+            }
+          ]
+        }
       }
     },
     "boolean": {

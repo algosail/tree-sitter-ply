@@ -3,9 +3,10 @@
 // between the colon and the name. A class method's name is the
 // identifier before `(`. A colon inside `()` `[]` `{}` `<>` is a label,
 // not a definition. `[]` is a quotation, `{}` is a record, `<>` is an
-// array. A field is `/name`, `=name`, or `+name`. Outside `()`, `.`
-// comments to the end of the line. Inside `()`, `.` and `..` stay scheme
-// syntax.
+// array. `/name` and `+name` are the old field marks. `= name` declares
+// a place, `=name` writes its frame, and `=>name` binds one. A space
+// leaves `=` and `=>`. Outside `()`, `.` comments to the end of the
+// line. Inside `()`, `.` and `..` stay scheme syntax.
 
 module.exports = grammar({
   name: "ply",
@@ -15,7 +16,7 @@ module.exports = grammar({
   rules: {
     source_file: ($) => seq(optional($._line), repeat(seq("\n", optional($._line)))),
 
-    _line: ($) => choice($.definition, $.method, $.binding, $._rest),
+    _line: ($) => choice($.definition, $.method, $.binding, $.place, $._rest),
 
     // `: name` or `: foreign name`.
     definition: ($) =>
@@ -34,6 +35,9 @@ module.exports = grammar({
 
     // `eq = eqInt`.
     binding: ($) => prec(2, seq(field("name", $.identifier), "=", $.identifier)),
+
+    // `= base Num`. The indented program is later lines. A glued `=base` is a word.
+    place: ($) => prec(2, seq("=", field("name", $.identifier), optional($._rest))),
 
     _rest: ($) => seq($._atom, repeat($._atom)),
 
@@ -67,6 +71,8 @@ module.exports = grammar({
         alias($._foreign, $.keyword),
         $.type_identifier,
         $.operator,
+        $.place_set,
+        $.place_bind,
         $.identifier,
         $.group,
         $.quotation,
@@ -96,14 +102,25 @@ module.exports = grammar({
 
     stack_tail: ($) => token(/\.\.[a-z_][A-Za-z0-9_]*/),
 
-    // `/name` reads a field. `=name` replaces one. `+name` inserts one.
-    // `=>`, `==`, `+1`, and a spaced `+` stay out of this token.
-    field: ($) =>
+    // `/name` reads a field. `+name` inserts one. `=>`, `==`, and a spaced `+` stay out.
+    field: ($) => token(choice(/\/[A-Za-z_][A-Za-z0-9_]*/, /\+[A-Za-z_][A-Za-z0-9_]*/)),
+
+    // `=name` writes the current frame. `=Alias:name` is the qualified word.
+    // The qualified form is first: a lowercase name does not swallow a colon.
+    place_set: ($) =>
       token(
-        choice(
-          /\/[A-Za-z_][A-Za-z0-9_]*/,
-          /=[A-Za-z_][A-Za-z0-9_]*/,
-          /\+[A-Za-z_][A-Za-z0-9_]*/,
+        prec(
+          2,
+          choice(/[=][A-Z][A-Za-z0-9_]*:[A-Za-z_][A-Za-z0-9_]*/, /[=][A-Za-z_][A-Za-z0-9_]*/),
+        ),
+      ),
+
+    // `=>name` binds a frame. A space leaves the constraint arrow `=>`.
+    place_bind: ($) =>
+      token(
+        prec(
+          2,
+          choice(/=>[A-Z][A-Za-z0-9_]*:[A-Za-z_][A-Za-z0-9_]*/, /=>[A-Za-z_][A-Za-z0-9_]*/),
         ),
       ),
 

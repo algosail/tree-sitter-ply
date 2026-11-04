@@ -48,6 +48,14 @@
           "named": true
         },
         {
+          "type": "place_bind",
+          "named": true
+        },
+        {
+          "type": "place_set",
+          "named": true
+        },
+        {
           "type": "quotation",
           "named": true
         },
@@ -156,6 +164,14 @@
           "named": true
         },
         {
+          "type": "place_bind",
+          "named": true
+        },
+        {
+          "type": "place_set",
+          "named": true
+        },
+        {
           "type": "quotation",
           "named": true
         },
@@ -220,6 +236,14 @@
         },
         {
           "type": "operator",
+          "named": true
+        },
+        {
+          "type": "place_bind",
+          "named": true
+        },
+        {
+          "type": "place_set",
           "named": true
         },
         {
@@ -310,6 +334,14 @@
           "named": true
         },
         {
+          "type": "place_bind",
+          "named": true
+        },
+        {
+          "type": "place_set",
+          "named": true
+        },
+        {
           "type": "quotation",
           "named": true
         },
@@ -336,6 +368,96 @@
     "type": "operator",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "place",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "field",
+          "named": true
+        },
+        {
+          "type": "group",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "keyword",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "place_bind",
+          "named": true
+        },
+        {
+          "type": "place_set",
+          "named": true
+        },
+        {
+          "type": "quotation",
+          "named": true
+        },
+        {
+          "type": "record",
+          "named": true
+        },
+        {
+          "type": "stack_tail",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "type_identifier",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "quotation",
@@ -383,6 +505,14 @@
         },
         {
           "type": "operator",
+          "named": true
+        },
+        {
+          "type": "place_bind",
+          "named": true
+        },
+        {
+          "type": "place_set",
           "named": true
         },
         {
@@ -454,6 +584,14 @@
         },
         {
           "type": "operator",
+          "named": true
+        },
+        {
+          "type": "place_bind",
+          "named": true
+        },
+        {
+          "type": "place_set",
           "named": true
         },
         {
@@ -538,6 +676,18 @@
         },
         {
           "type": "operator",
+          "named": true
+        },
+        {
+          "type": "place",
+          "named": true
+        },
+        {
+          "type": "place_bind",
+          "named": true
+        },
+        {
+          "type": "place_set",
           "named": true
         },
         {
@@ -673,6 +823,14 @@
   },
   {
     "type": "number",
+    "named": true
+  },
+  {
+    "type": "place_bind",
+    "named": true
+  },
+  {
+    "type": "place_set",
     "named": true
   },
   {

@@ -1,7 +1,7 @@
 ; Scan order when reading Ply. Loud marks are rare boundaries.
 ; Quotation brackets [] are the code/value boundary.
 ; -- -> => and | shape a scheme, an equation, a constraint, or a row.
-; ~ ; - & # say which kind of declaration the line is.
+; ~ ; - & # and a spaced = say which kind of declaration the line is.
 ; The name after : is the word being defined. Parentheses, braces,
 ; array angles, colons, and commas stay quiet so those marks can show.
 
@@ -19,6 +19,9 @@
 (definition name: (identifier) @variable @function)
 (method name: (identifier) @variable @function)
 (binding name: (identifier) @variable @function)
+(place name: (identifier) @variable @function)
+(place_set) @keyword
+(place_bind) @keyword
 
 [
   "["
@@ -48,3 +51,5 @@
   ","
   "."
 ] @punctuation
+
+(place "=" @keyword)
